@@ -10,16 +10,19 @@ const posts = require('./routes/api/posts');
 const app = express();
 
 // Body parser middleware
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(
+    bodyParser.urlencoded({
+        extended: false
+    })
+);
 app.use(bodyParser.json());
 
 // DB config
 const db = require('./config/keys').mongoURI;
 
 // Connect to MongoDB
-mongoose.connect(db)
+mongoose
+    .connect(db)
     .then(() => console.log('MongoDB Connected!'))
     .catch(err => console.log(err));
 
