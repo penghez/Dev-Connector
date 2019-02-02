@@ -3,6 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
 
+// Load Input Validation
+const validateProfileInput = require('../../validation/profile');
+
 // Load Profile model
 const Profile = require('../../models/Profile');
 // Load User model
@@ -52,7 +55,13 @@ router.post(
         session: false
     }),
     (req, res) => {
-        const errors = {};
+        const { errors, isValid } = validateProfileInput(req.body);
+
+        // Check Validation
+        if (!isValid) {
+            return res.status(400).json(errors);
+        }
+
         // Get fields
         const profileFields = {};
         profileFields.user = req.user.id;
